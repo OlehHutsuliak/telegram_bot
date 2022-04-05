@@ -1,13 +1,13 @@
 import requests
-from telegram import Update
+from telegram import Update, Bot
 from bs4 import BeautifulSoup
 from datetime import date
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler
 import logging
 
 headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
                          "Chrome/51.0.2704.103 ""Safari/537.36 "}
-token = 'TOKEN'
+token = '5259860771:AAFpnIOs7ZfP7Yh6zCR7PrVn4vQTvXQb_ag'
 
 
 def get_sun_time_data():
@@ -47,12 +47,17 @@ def currency_course():
     return usd_to_pln, eur_to_pln
 
 
+def start(update: Update, context: CallbackContext):
+    text_to_send = f"Hi, {update.effective_user.username}. I see, you  are new here. Let's check how I can help you."
+    context.bot.send_message(chat_id=update.effective_chat.id, text=text_to_send)
+
+
 def suntime(update: Update, context: CallbackContext):
     text_to_send = f"Hi, today is {today_date} \U0001F600\n" \
                    f"sunrise - {sunrise}\n" \
                    f"sunset - {sunset}\n" \
                    f"day length - {day_length}"
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{text_to_send}")
+    context.bot.send_message(chat_id=update.effective_chat.id, text=text_to_send)
 
 
 def currency_exchange(update: Update, context: CallbackContext):
@@ -74,6 +79,7 @@ def main() -> None:
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
     # Add handlers
+    dispatcher.add_handler(CommandHandler('start', start))
     dispatcher.add_handler(CommandHandler('suntime', suntime))
     dispatcher.add_handler(CommandHandler('currency', currency_exchange))
     # Start - Stop
