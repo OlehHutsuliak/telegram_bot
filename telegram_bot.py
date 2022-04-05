@@ -1,13 +1,14 @@
 import requests
-from telegram import Update, Bot
+from telegram import Update
 from bs4 import BeautifulSoup
 from datetime import date
-from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler
+from telegram.ext import Updater, CommandHandler, CallbackContext
 import logging
+import os
 
 headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
                          "Chrome/51.0.2704.103 ""Safari/537.36 "}
-token = '5259860771:AAFpnIOs7ZfP7Yh6zCR7PrVn4vQTvXQb_ag'
+token = os.environ["TOKEN"]
 
 
 def get_sun_time_data():
