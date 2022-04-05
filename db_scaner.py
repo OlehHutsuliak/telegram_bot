@@ -1,6 +1,5 @@
 import redis
 import os
-fgfgfgfgfgfgf
 
 redis_url = os.environ["REDIS_URL"]
 redis_connection = redis.from_url(redis_url)
