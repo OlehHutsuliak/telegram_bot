@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import date
 import os
 import redis
+import telebot
 
 headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
                          "Chrome/51.0.2704.103 ""Safari/537.36 "}
@@ -45,12 +46,14 @@ def currency_course():
     return usd_to_pln, eur_to_pln
 
 
-class Variables:
-    sunrise, sunset, day_length, today_date = get_sun_time_data()
-    usd_pln, eur_pln = currency_course()
+sunrise, sunset, day_length, today_date = get_sun_time_data()
+usd_pln, eur_pln = currency_course()
 
+
+class Variables:
     token = os.environ["TOKEN"]
     redis_connection = redis.from_url(os.environ["REDIS_URL"])
+    bot = telebot.TeleBot(token)
 
     suntime_text = f"\U0001F313 Hi, today is {today_date} \U0001F313\n" \
                    f"                sunrise - {sunrise}\n" \
@@ -58,6 +61,6 @@ class Variables:
                    f"           day length - {day_length}"
     currency_exchange_text = f"   According to the Lord's will\n" \
                              f"               \U0001F640 \U0001F640 \U0001F640\n" \
-                             f"  \U0001F56F {usd_pln} PLN for 1 USD \U0001F56F\n" \
-                             f"  \U0001F56F {eur_pln} PLN for 1 EUR \U0001F56F"
-    message_filter_text = "This Bot doesn't receive messages. Please select one of available command below"
+                             f" \U0001F56F {usd_pln} PLN for 1 USD \U0001F56F\n" \
+                             f" \U0001F56F {eur_pln} PLN for 1 EUR \U0001F56F"
+    message_filter_text = "This Bot doesn't receive messages. Please select one of available commands below"
