@@ -4,6 +4,7 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandle
 import logging
 from telebot import types
 from variables import Variables as V
+from variables import get_sun_time_data, currency_course
 
 redis_connection = V.redis_connection
 db_keys = redis_connection.keys(pattern='*')
@@ -20,11 +21,13 @@ def start(update: Update, context: CallbackContext):
 
 
 def suntime(update: Update, context: CallbackContext):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=V.suntime_text)
+    suntime_text = get_sun_time_data()
+    context.bot.send_message(chat_id=update.effective_chat.id, text=suntime_text)
 
 
 def currency_exchange(update: Update, context: CallbackContext):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=V.currency_exchange_text)
+    currency_exchange_text = currency_course()
+    context.bot.send_message(chat_id=update.effective_chat.id, text=currency_exchange_text)
 
 
 def message_filter(update: Update, context: CallbackContext):
@@ -47,15 +50,17 @@ def button(update: Update, context: CallbackContext):
 
 
 def sun_daily_alert(context: CallbackContext):
+    suntime_text = get_sun_time_data()
     for keys in db_keys:
         chat_id_value = redis_connection.get(keys).decode("UTF-8")
-        context.bot.send_message(chat_id=chat_id_value, text=V.suntime_text)
+        context.bot.send_message(chat_id=chat_id_value, text=suntime_text)
 
 
 def currency_daily_alert(context: CallbackContext):
+    currency_exchange_text = currency_course()
     for keys in db_keys:
         chat_id_value = redis_connection.get(keys).decode("UTF-8")
-        context.bot.send_message(chat_id=chat_id_value, text=V.currency_exchange_text)
+        context.bot.send_message(chat_id=chat_id_value, text=currency_exchange_text)
 
 
 def main() -> None:
