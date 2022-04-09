@@ -1,7 +1,4 @@
-from variables import Variables as V
-
-redis_connection = V.redis_connection
-db_keys = redis_connection.keys(pattern="*")
+from telegram_bot import redis_connection, db_keys
 
 print((len(db_keys)))
 
