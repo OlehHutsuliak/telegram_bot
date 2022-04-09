@@ -2,12 +2,17 @@ import datetime
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters, CallbackQueryHandler
 import logging
+import telebot
 from telebot import types
-from variables import Variables as V
-from variables import get_sun_time_data, currency_course
+from data_scraper import get_sun_time_data, currency_course
+import os
+import redis
 
-redis_connection = V.redis_connection
+token = os.environ["TOKEN"]
+redis_connection = redis.from_url(os.environ["REDIS_URL"])
+
 db_keys = redis_connection.keys(pattern='*')
+bot = telebot.TeleBot(token)
 
 
 def start(update: Update, context: CallbackContext):
@@ -31,10 +36,11 @@ def currency_exchange(update: Update, context: CallbackContext):
 
 
 def message_filter(update: Update, context: CallbackContext):
+    message_filter_text = "This Bot doesn't receive messages. Please select one of available commands below"
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton("SunTime", callback_data='suntime'))
     markup.add(types.InlineKeyboardButton("Currency Exchange", callback_data='currency_exchange'))
-    V.bot.send_message(chat_id=update.effective_chat.id, text=V.message_filter_text, reply_markup=markup)
+    bot.send_message(chat_id=update.effective_chat.id, text=message_filter_text, reply_markup=markup)
 
 
 def button(update: Update, context: CallbackContext):
@@ -64,7 +70,7 @@ def currency_daily_alert(context: CallbackContext):
 
 
 def main() -> None:
-    updater = Updater(token=V.token)
+    updater = Updater(token=token)
     dispatcher = updater.dispatcher
     job = updater.job_queue
 
