@@ -1,9 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import date
-import os
-import redis
-import telebot
 
 headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
                          "Chrome/51.0.2704.103 ""Safari/537.36 "}
@@ -53,10 +50,3 @@ def currency_course():
                              f" \U0001F56F {usd_pln} PLN for 1 USD \U0001F56F\n" \
                              f" \U0001F56F {eur_pln} PLN for 1 EUR \U0001F56F"
     return currency_exchange_text
-
-
-class Variables:
-    token = os.environ["TOKEN"]
-    redis_connection = redis.from_url(os.environ["REDIS_URL"])
-    bot = telebot.TeleBot(token)
-    message_filter_text = "This Bot doesn't receive messages. Please select one of available commands below"
