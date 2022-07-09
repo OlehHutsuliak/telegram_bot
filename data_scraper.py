@@ -31,27 +31,33 @@ def get_sun_time_data():
 def currency_course():
     amount = "1"
     sell = ["USD", "EUR", "PLN"]
-    buy = ["PLN", "UAH"]
+    buy = ["PLN", "UAH", "USD"]
     url_usd_pln = f"https://www.xe.com/currencyconverter/convert/?Amount={amount}&From={sell[0]}&To={buy[0]}"
     url_eur_pln = f"https://www.xe.com/currencyconverter/convert/?Amount={amount}&From={sell[1]}&To={buy[0]}"
     url_pln_uah = f"https://www.xe.com/currencyconverter/convert/?Amount={amount}&From={sell[2]}&To={buy[1]}"
+    url_eur_usd = f"https://www.xe.com/currencyconverter/convert/?Amount={amount}&From={sell[1]}&To={buy[2]}"
 
     # Get pages
     usd_pln_page = requests.get(url_usd_pln, headers=headers)
     eur_pln_page = requests.get(url_eur_pln, headers=headers)
     pln_uah_page = requests.get(url_pln_uah, headers=headers)
+    eur_usd_page = requests.get(url_eur_usd, headers=headers)
 
     usd_pln_page_element = BeautifulSoup(usd_pln_page.text, 'html.parser').main.find_all('p')[1]
     eur_pln_page_element = BeautifulSoup(eur_pln_page.text, 'html.parser').main.find_all('p')[1]
     pln_uah_page_element = BeautifulSoup(pln_uah_page.text, 'html.parser').main.find_all('p')[1]
+    eur_usd_page_element = BeautifulSoup(eur_usd_page.text, 'html.parser').main.find_all('p')[1]
 
     usd_pln = usd_pln_page_element.text[:4]
     eur_pln = eur_pln_page_element.text[:4]
     pln_uah = pln_uah_page_element.text[:4]
+    eur_usd = eur_usd_page_element.text[:4]
 
     currency_exchange_text = f"   According to the Lord's will\n" \
                              f"               \U0001F640 \U0001F640 \U0001F640\n" \
                              f"     {usd_pln} PLN for 1 USD\n" \
                              f"     {eur_pln} PLN for 1 EUR\n" \
-                             f"     {pln_uah} UAH for 1 PLN"
+                             f"     {pln_uah} UAH for 1 PLN\n" \
+                             f"     {eur_usd} USD for 1 EUR"
+
     return currency_exchange_text
