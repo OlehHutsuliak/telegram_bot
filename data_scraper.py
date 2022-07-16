@@ -48,10 +48,10 @@ def currency_course():
     pln_uah_page_element = BeautifulSoup(pln_uah_page.text, 'html.parser').main.find_all('p')[1]
     eur_usd_page_element = BeautifulSoup(eur_usd_page.text, 'html.parser').main.find_all('p')[1]
 
-    usd_pln = usd_pln_page_element.text[:4]
-    eur_pln = eur_pln_page_element.text[:4]
-    pln_uah = pln_uah_page_element.text[:4]
-    eur_usd = eur_usd_page_element.text[:4]
+    usd_pln = usd_pln_page_element.text[:5]
+    eur_pln = eur_pln_page_element.text[:5]
+    pln_uah = pln_uah_page_element.text[:5]
+    eur_usd = eur_usd_page_element.text[:5]
 
     currency_exchange_text = f"   According to the Lord's will\n" \
                              f"               \U0001F640 \U0001F640 \U0001F640\n" \
